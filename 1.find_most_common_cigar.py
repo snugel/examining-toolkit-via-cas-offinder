@@ -1,11 +1,13 @@
 from glob import glob
 from sys import argv
 from os import path
+from collections import defaultdict
 import re
 import pysam
 
 cigar_len = 10
-threshold = 0
+if len(argv) > 3:
+    threshold = int(argv[3])
 
 filename = '.'.join(argv[2].split(".")[:-1])
 outfilename = "most_"+filename+".txt"
@@ -19,15 +21,22 @@ def find_most_common_cigar(cigar_list):
     rtncigar = ''
     cigars = zip(*cigar_list)
     for cigar in cigars:
-        max_dic = {}
+        max_dic = defaultdict(lambda: 0)
+        cnt_i = 0
+        cnt_d = 0
         for c in cigar:
-            if c == 'I' or c == 'D':
-                max_dic[c] = 999999
-                break
-            if c in max_dic:
-                max_dic[c] += 1
+            if c == 'I':
+                cnt_i += 1
+            elif c == 'D':
+                cnt_d += 1
             else:
-                max_dic[c] = 1
+                max_dic[c] += 1
+        if (cnt_i * 100.0) / len(cigar) > threshold or (cnt_d * 100.0) / len(cigar) > threshold:
+            if cnt_i > cnt_d:
+                rtncigar += 'I'
+            else:
+                rtncigar += 'D'
+            continue
         if len(max_dic) > 1 and '_' in max_dic:
             del max_dic['_']
         rtncigar += max(max_dic.iteritems(), key=lambda e: e[1])[0]
