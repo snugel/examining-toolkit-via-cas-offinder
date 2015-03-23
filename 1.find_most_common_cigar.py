@@ -68,7 +68,7 @@ def find_in_samfile(ref_filename, sam_filename):
                     flag = True
                 cigar_list = []
                 for entry in f.fetch(chrom, start-1, end-1):
-                    if entry.cigarstring != "":
+                    if entry.cigarstring != "" and entry.cigarstring != None:
                         pos = entry.pos
                         cigar = entry.cigarstring
                         str_list=p1.findall(cigar)
