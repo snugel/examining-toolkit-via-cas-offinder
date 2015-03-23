@@ -47,7 +47,11 @@ def find_in_samfile(ref_filename, sam_filename):
     with open(ref_filename) as f:
         for line in f:
             entries = line.strip().split(":")
-            num, chrom = entries[0].split(".")
+            sc1 = entries[0].split(".")
+            if len(sc1) == 2:
+                num, chrom = sc1
+            else:
+                num, chrom = entries[0].split()
             start, end = entries[1].split("-")
             entries = (num, int(start), int(end))
             if chrom in genes_dic:
