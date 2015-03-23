@@ -32,10 +32,10 @@ def find_most_common_cigar(cigar_list):
             else:
                 max_dic[c] += 1
         if (cnt_i * 100.0) / len(cigar) > threshold or (cnt_d * 100.0) / len(cigar) > threshold:
-            if cnt_i > cnt_d:
-                rtncigar += 'I'
-            else:
+            if cnt_i < cnt_d:
                 rtncigar += 'D'
+            else:
+                rtncigar += 'I'
             continue
         if len(max_dic) > 1 and '_' in max_dic:
             del max_dic['_']
