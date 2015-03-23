@@ -47,10 +47,9 @@ def find_in_samfile(ref_filename, sam_filename):
     with open(ref_filename) as f:
         for line in f:
             entries = line.strip().split(":")
-            sc1 = entries[0].split(".")
-            if len(sc1) == 2:
-                num, chrom = sc1
-            else:
+            try:
+                num, chrom = entries[0].split(".")
+            except:
                 num, chrom = entries[0].split()
             start, end = entries[1].split("-")
             entries = (num, int(start), int(end))
