@@ -6,10 +6,11 @@ import re
 import pysam
 
 cigar_len = 10
+threshold = 0
 if len(argv) > 3:
     threshold = int(argv[3])
 
-filename = '.'.join(argv[2].split(".")[:-1])
+filename = '.'.join(argv[2].split(".")[:-1]).split('/')[-1]
 outfilename = "most_"+filename+".txt"
 
 cigar_list = []
